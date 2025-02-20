@@ -1,0 +1,312 @@
+PS C:\Users\LAPTOP JM> wsl
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+[sudo] password for jeison-nazarit13:
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+OK
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ exit
+logout
+PS C:\Users\LAPTOP JM> wsl -l -v
+  NAME      STATE           VERSION
+* Ubuntu    Running         2
+PS C:\Users\LAPTOP JM> lsb_release -a
+lsb_release : El término 'lsb_release' no se reconoce como nombre de un cmdlet, función, archivo de
+script o programa ejecutable. Compruebe si escribió correctamente el nombre o, si incluyó una ruta
+de acceso, compruebe que dicha ruta es correcta e inténtelo de nuevo.
+En línea: 1 Carácter: 1
++ lsb_release -a
++ ~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (lsb_release:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\LAPTOP JM> wsl
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 24.04.2 LTS
+Release:        24.04
+Codename:       noble
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ exit
+logout
+PS C:\Users\LAPTOP JM> wsl -l -v
+  NAME      STATE           VERSION
+* Ubuntu    Running         2
+PS C:\Users\LAPTOP JM> wsl
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+[sudo] password for jeison-nazarit13:
+Sorry, try again.
+[sudo] password for jeison-nazarit13:
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+OK
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/24.04/mssql-server-2019.list)"
+Error: no actions requested.
+usage: add-apt-repository [-h] [-d] [-r] [-s] [-c COMPONENT] [-p POCKET] [-y] [-n] [-l] [--dry-run]
+                          [-L] [-P PPA] [-C CLOUD] [-U URI] [-S SOURCESLIST [SOURCESLIST ...]]
+                          [line ...]
+
+Only ONE of -P, -C, -U, -S, or old-style 'line' can be specified
+
+positional arguments:
+  line                  sources.list line to add (deprecated)
+
+options:
+  -h, --help            show this help message and exit
+  -d, --debug           Print debug
+  -r, --remove          Disable repository
+  -s, --enable-source   Allow downloading of the source packages from the repository
+  -c COMPONENT, --component COMPONENT
+                        Components to use with the repository
+  -p POCKET, --pocket POCKET
+                        Add entry for this pocket
+  -y, --yes             Assume yes to all queries
+  -n, --no-update       Do not update package cache after adding
+  -l, --login           Login to Launchpad.
+  --dry-run             Don't actually make any changes.
+  -L, --list            List currently configured repositories
+  -P PPA, --ppa PPA     PPA to add
+  -C CLOUD, --cloud CLOUD
+                        Cloud Archive to add
+  -U URI, --uri URI     Archive URI to add
+  -S SOURCESLIST [SOURCESLIST ...], --sourceslist SOURCESLIST [SOURCESLIST ...]
+                        Full sources.list entry line to add
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ sudo apt update
+sudo apt install -y mssql-server
+Hit:1 https://download.docker.com/linux/ubuntu noble InRelease
+Get:2 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Hit:3 http://archive.ubuntu.com/ubuntu noble InRelease
+Get:4 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Get:5 http://security.ubuntu.com/ubuntu noble-security/main amd64 Components [8952 B]
+Get:6 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Components [51.9 kB]
+Get:7 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Components [208 B]
+Get:8 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [208 B]
+Get:9 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+Get:10 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [151 kB]
+Get:11 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [363 kB]
+Get:12 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]
+Get:13 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+Get:14 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [208 B]
+Get:15 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [17.7 kB]
+Get:16 http://archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [212 B]
+Get:17 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]
+Fetched 973 kB in 3s (348 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+All packages are up to date.
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+E: Unable to locate package mssql-server
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker --version
+Docker version 28.0.0, build f9ced58
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker pull postgres
+Using default tag: latest
+latest: Pulling from library/postgres
+c29f5b76f736: Pull complete
+559c5c599163: Pull complete
+4553993e7797: Pull complete
+e1ad38ab49c1: Pull complete
+20f2363da6db: Pull complete
+0dc773e0cc79: Pull complete
+91393204ae54: Pull complete
+c0311d3bf51b: Pull complete
+931e444b6b99: Pull complete
+0de06291fc41: Pull complete
+1f9512881cf4: Pull complete
+a608baae1e5c: Pull complete
+91befecb86a3: Pull complete
+8da49c2b3211: Pull complete
+Digest: sha256:0321e2252ebfeecb8bc1a899755084d29bce872953e1a5a3e25ec0860b739098
+Status: Downloaded newer image for postgres:latest
+docker.io/library/postgres:latest
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker pull mcr.microsoft.com/mssql/server:latest
+latest: Pulling from mssql/server
+3d29464607d8: Pull complete
+0c8dd24b9869: Pull complete
+66f9cfb9e33d: Pull complete
+Digest: sha256:d252932ef839c24c61c1139cc98f69c85ca774fa7c6bfaaa0015b7eb02b9dc87
+Status: Downloaded newer image for mcr.microsoft.com/mssql/server:latest
+mcr.microsoft.com/mssql/server:latest
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker pull container-registry.oracle.com/database/enterprise:latest
+latest: Pulling from database/enterprise
+Digest: sha256:c5ad975902cfe523a4ac9f046ec87cd0fd41c24118651ca0e7194f736ae4e3c7
+Status: Downloaded newer image for container-registry.oracle.com/database/enterprise:latest
+container-registry.oracle.com/database/enterprise:latest
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker images
+REPOSITORY                                          TAG        IMAGE ID       CREATED         SIZE
+postgres                                            latest     d14b06b9a915   3 days ago      438MB
+hello-world                                         latest     74cc54e27dc4   4 weeks ago     10.1kB
+mcr.microsoft.com/mssql/server                      latest     b823451808db   5 weeks ago     1.62GB
+container-registry.oracle.com/database/enterprise   21.3.0.0   35e92315f1f8   18 months ago   8.58GB
+container-registry.oracle.com/database/enterprise   latest     35e92315f1f8   18 months ago   8.58GB
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ sudo systemctl start postgresql
+Failed to start postgresql.service: Unit postgresql.service not found.
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ sudo systemctl start postgresql
+Failed to start postgresql.service: Unit postgresql.service not found.
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker start postgres-db
+Error response from daemon: No such container: postgres-db
+Error: failed to start containers: postgres-db
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker ps -q
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker ps -q
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docekr images
+Command 'docekr' not found, did you mean:
+  command 'docker' from snap docker (27.2.0)
+  command 'docker' from deb docker.io (24.0.7-0ubuntu4.1)
+  command 'docker' from deb podman-docker (4.9.3+ds1-1ubuntu0.2)
+See 'snap info <snapname>' for additional versions.
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker images
+REPOSITORY                                          TAG        IMAGE ID       CREATED         SIZE
+postgres                                            latest     d14b06b9a915   3 days ago      438MB
+hello-world                                         latest     74cc54e27dc4   4 weeks ago     10.1kB
+mcr.microsoft.com/mssql/server                      latest     b823451808db   5 weeks ago     1.62GB
+container-registry.oracle.com/database/enterprise   21.3.0.0   35e92315f1f8   18 months ago   8.58GB
+container-registry.oracle.com/database/enterprise   latest     35e92315f1f8   18 months ago   8.58GB
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker run -d --name postgres-db \
+  -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD=admin \
+  -p 5432:5432 \
+  postgres
+1d2b4630a4312702e9bab1093a0d797ed8d7c91ddb82c0d126613cd18651b0cd
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker run -d --name mssql-db \
+  -e 'ACCEPT_EULA=Y' \
+  -e 'SA_PASSWORD=TuPassword123!' \
+  -p 1433:1433 \
+  mcr.microsoft.com/mssql/server
+3bb8971826a6ccb791a36351e256492644d4df831bf651b3b7af56aef9b6de38
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker run -d --name oracle-db \
+  -p 1521:1521 \
+  container-registry.oracle.com/database/enterprise
+e16924eb6b6166a2492c1f6d649030470166cc15a8bb302fd352b3aa4c016d98
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docekr ps
+Command 'docekr' not found, did you mean:
+  command 'docker' from snap docker (27.2.0)
+  command 'docker' from deb docker.io (24.0.7-0ubuntu4.1)
+  command 'docker' from deb podman-docker (4.9.3+ds1-1ubuntu0.2)
+See 'snap info <snapname>' for additional versions.
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker ps
+CONTAINER ID   IMAGE                                               COMMAND                  CREATED          STATUS                             PORTS                                         NAMES
+e16924eb6b61   container-registry.oracle.com/database/enterprise   "/bin/sh -c 'exec $O…"   11 seconds ago   Up 10 seconds (health: starting)   0.0.0.0:1521->1521/tcp, [::]:1521->1521/tcp   oracle-db
+3bb8971826a6   mcr.microsoft.com/mssql/server                      "/opt/mssql/bin/perm…"   19 seconds ago   Up 18 seconds                      0.0.0.0:1433->1433/tcp, [::]:1433->1433/tcp   mssql-db
+1d2b4630a431   postgres                                            "docker-entrypoint.s…"   26 seconds ago   Up 26 seconds                      0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp   postgres-db
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker exec -it postgres-db psql -U admin
+psql (17.3 (Debian 17.3-3.pgdg120+1))
+Type "help" for help.
+
+admin=# exit
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker exec -it mssql-db /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'TuPassword123!'
+OCI runtime exec failed: exec failed: unable to start container process: exec: "/opt/mssql-tools/bin/sqlcmd": stat /opt/mssql-tools/bin/sqlcmd: no such file or directory: unknown
+exit status 127
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker exec -it mssql-db /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Jesian0613!'
+OCI runtime exec failed: exec failed: unable to start container process: exec: "/opt/mssql-tools/bin/sqlcmd": stat /opt/mssql-tools/bin/sqlcmd: no such file or directory: unknown
+exit status 127
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker ps -a | grep mssql-db
+3bb8971826a6   mcr.microsoft.com/mssql/server                      "/opt/mssql/bin/perm…"   3 minutes ago   Up 3 minutes                      0.0.0.0:1433->1433/tcp, [::]:1433->1433/tcp   mssql-db
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker exec -it mssql-db bash
+mssql@3bb8971826a6:/$ /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'TuPassword123!'
+bash: /opt/mssql-tools/bin/sqlcmd: No such file or directory
+mssql@3bb8971826a6:/$ exit
+exit
+exit status 127
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker exec -it mssql-db bash
+mssql@3bb8971826a6:/$ apt update
+apt install -y curl gnupg2 apt-transport-https
+Reading package lists... Done
+E: List directory /var/lib/apt/lists/partial is missing. - Acquire (13: Permission denied)
+E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)
+E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?
+mssql@3bb8971826a6:/$ curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
+apt update
+bash: curl: command not found
+E: gnupg, gnupg2 and gnupg1 do not seem to be installed, but one of them is required for this operation
+bash: curl: command not found
+tee: /etc/apt/sources.list.d/mssql-release.list: Permission denied
+Reading package lists... Done
+E: List directory /var/lib/apt/lists/partial is missing. - Acquire (13: Permission denied)
+mssql@3bb8971826a6:/$ docker exec -it mssql-db bash
+bash: docker: command not found
+mssql@3bb8971826a6:/$ apt update
+apt install -y curl gnupg2 apt-transport-https
+Reading package lists... Done
+E: List directory /var/lib/apt/lists/partial is missing. - Acquire (13: Permission denied)
+E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)
+E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?
+mssql@3bb8971826a6:/$ apt update
+apt install -y curl gnupg2 apt-transport-https
+Reading package lists... Done
+E: List directory /var/lib/apt/lists/partial is missing. - Acquire (13: Permission denied)
+E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)
+E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?
+mssql@3bb8971826a6:/$ sudo apt update
+sudo apt install -y curl gnupg2 apt-transport-https
+bash: sudo: command not found
+bash: sudo: command not found
+mssql@3bb8971826a6:/$ su -
+Password:
+su: Authentication failure
+mssql@3bb8971826a6:/$ su -
+Password:
+su: Authentication failure
+mssql@3bb8971826a6:/$ docker exec -it --user root mssql-db bash
+bash: docker: command not found
+mssql@3bb8971826a6:/$ docker stop mssql-db
+docker rm mssql-db
+docker run -d --name mssql-db --user root \
+  -e 'ACCEPT_EULA=Y' \
+  -e 'SA_PASSWORD=TuPassword123!' \
+  -p 1433:1433 \
+  mcr.microsoft.com/mssql/server
+bash: docker: command not found
+bash: docker: command not found
+bash: docker: command not found
+mssql@3bb8971826a6:/$ exit
+exit
+exit status 127
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker stop mssql-db
+docker rm mssql-db
+docker run -d --name mssql-db --user root \
+  -e 'ACCEPT_EULA=Y' \
+  -e 'SA_PASSWORD=TuPassword123!' \
+  -p 1433:1433 \
+  mcr.microsoft.com/mssql/server
+mssql-db
+mssql-db
+56a396c3481cdb0183857b8430f110da59343852670802e1faf01b56aefa8a0e
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker exec -it mssql-db bash
+root@56a396c3481c:/# sudo apt update
+sudo apt install -y curl gnupg2 apt-transport-https
+bash: sudo: command not found
+bash: sudo: command not found
+root@56a396c3481c:/# exit
+exit
+exit status 127
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ docker exec -it oracle-db sqlplus / as sysdba
+
+SQL*Plus: Release 21.0.0.0.0 - Production on Thu Feb 20 04:10:27 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+ERROR:
+ORA-12162: TNS:net service name is incorrectly specified
+
+
+Enter user-name: yetonaza@gmail.com
+Enter password:
+
+docker exec -it oracle-db sqlplus / as sysdba
+ERROR:
+ORA-12543: TNS:destination host unreachable
+
+
+Enter user-name: ERROR:
+ORA-12162: TNS:net service name is incorrectly specified
+
+
+SP2-0157: unable to CONNECT to ORACLE after 3 attempts, exiting SQL*Plus
+exit status 1
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$ ^C
+jeison-nazarit13@LAPTOP-Q0UFHN4B:/mnt/c/Users/LAPTOP JM$
