@@ -1,0 +1,28 @@
+# Ejercicio 1: Ejecutar un contenedor simple de Nginx
+docker compose up -d
+# Verificar en el navegador
+# http://localhost:8080
+docker compose down
+
+# Ejercicio 2: Ejecutar una aplicación web con una base de datos
+docker compose up --build -d
+# Verificar en el navegador
+# http://localhost:5000
+docker compose down
+
+# Ejercicio 3: Montar un volumen para persistir datos
+docker-compose up -d
+# Verificar en el navegador
+# http://localhost:8080
+docker-compose down
+
+# Ejercicio 4: Usar variables de entorno
+docker-compose up --build -d
+# Verificar en el navegador
+# http://localhost:5000
+docker compose down
+
+# Ejercicio 5: Escalar un servicio
+docker-compose up --scale web=3 -d
+docker ps
+docker compose down
