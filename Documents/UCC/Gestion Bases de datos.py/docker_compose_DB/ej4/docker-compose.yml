@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  master:
+    image: postgres:13
+    container_name: postgres_master
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_master_data:/var/lib/postgresql/data
+    networks:
+      - pg_network
+
+  replica:
+    image: postgres:13
+    container_name: postgres_replica
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: mydatabase
+      REPLICATE_FROM: postgres_master
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql/data
+    depends_on:
+      - master
+    networks:
+      - pg_network
+
+volumes:
+  postgres_master_data:
+  postgres_replica_data:
+
+networks:
+  pg_network:
+    driver: bridge
