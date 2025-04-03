@@ -1,0 +1,75 @@
+Semana 8 SD
+
+docker-compose.yml
+
+version: "3.8"
+services:
+  trm_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+  
+  trm_caller:
+    build:
+      context: .
+      dockerfile: Dockerfile.caller
+   
+------------------
+
+dockerfille
+
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install fastapi uvicorn requests
+
+CMD ["uvicorn", "trm_api:app", "--host", "0.0.0.0", "--port", "8000"]
+
+------------------
+
+dockerfille.caller
+
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install requests
+
+CMD ["python", "trm_caller.py"]
+
+------------------
+trm_api.py
+
+from fastapi import FastAPI
+import requests
+
+app = FastAPI()
+
+@app.get("/trm")
+def get_trm():
+    return {"trm": 4000}
+
+------------------
+
+trm_caller.py
+
+import time
+import requests
+import os
+
+def call_trm_api(interval):
+    while True:
+        response = requests.get("http://trm_api:8000/trm")
+        print(response.json())
+        time.sleep(interval)
+
+if __name__ == "__main__":
+    interval = int(os.getenv("INTERVAL", 10))
+    call_trm_api(interval)
