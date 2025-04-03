@@ -1,0 +1,214 @@
+Ejercicio 6.1
+
+import psycopg2
+
+try:
+    # Conectar a la base de datos
+    conexion = psycopg2.connect(
+        dbname="nombre_db",
+        user="tu_usuario",
+        password="tu_contraseña",
+        host="localhost",
+        port="5432"
+    )
+    cursor = conexion.cursor()
+
+    # Iniciar una transacción
+    cursor.execute("BEGIN;")
+    
+    # Actualizar cuentas
+    cursor.execute("UPDATE cuentas SET saldo = saldo - 100 WHERE cuenta_id = 1;")
+    cursor.execute("UPDATE cuentas SET saldo = saldo + 100 WHERE cuenta_id = 2;")
+    
+    # Confirmar la transacción
+    cursor.execute("COMMIT;")
+
+except Exception as e:
+    print(f"Ocurrió un error: {e}")
+    cursor.execute("ROLLBACK;")  # Revertir cambios en caso de error
+finally:
+    cursor.close()
+    conexion.close()
+
+
+---------------------------------
+
+Ejercicio 6.2
+
+import psycopg2
+
+try:
+    # Conectar a la base de datos
+    conexion = psycopg2.connect(
+        dbname="nombre_db",
+        user="tu_usuario",
+        password="tu_contraseña",
+        host="localhost",
+        port="5432"
+    )
+    cursor = conexion.cursor()
+
+    # Iniciar una transacción
+    cursor.execute("BEGIN;")
+    cursor.execute("SAVEPOINT inicio_transferencia;")
+    
+    # Actualizar cuentas
+    cursor.execute("UPDATE cuentas SET saldo = saldo - 50 WHERE cuenta_id = 1;")
+    cursor.execute("SAVEPOINT punto_intermedio;")
+    cursor.execute("UPDATE cuentas SET saldo = saldo + 50 WHERE cuenta_id = 2;")
+    
+    # Revertir hasta el punto intermedio
+    cursor.execute("ROLLBACK TO punto_intermedio;")
+    
+    # Confirmar la transacción
+    cursor.execute("COMMIT;")
+
+except Exception as e:
+    print(f"Ocurrió un error: {e}")
+    cursor.execute("ROLLBACK;")  # Revertir cambios en caso de error
+finally:
+    cursor.close()
+    conexion.close()
+
+------------------------------
+
+Ejercicio 7.1
+
+import psycopg2
+
+try:
+    # Conectar a la base de datos
+    conexion = psycopg2.connect(
+        dbname="nombre_db",
+        user="tu_usuario",
+        password="tu_contraseña",
+        host="localhost",
+        port="5432"
+    )
+    cursor = conexion.cursor()
+
+    # Consultar total de ventas por producto
+    cursor.execute("""
+        SELECT producto_id, SUM(cantidad * precio) AS total_ventas
+        FROM ventas
+        GROUP BY producto_id;
+    """)
+    
+    resultados = cursor.fetchall()
+    for fila in resultados:
+        print(f"Producto ID: {fila[0]}, Total Ventas: {fila[1]}")
+
+except Exception as e:
+    print(f"Ocurrió un error: {e}")
+finally:
+    cursor.close()
+    conexion.close()
+
+--------------------------
+
+Ejercicio 7.2
+
+import psycopg2
+
+try:
+    # Conectar a la base de datos
+    conexion = psycopg2.connect(
+        dbname="nombre_db",
+        user="tu_usuario",
+        password="tu_contraseña",
+        host="localhost",
+        port="5432"
+    )
+    cursor = conexion.cursor()
+
+    # Contar el número de clientes que realizaron compras
+    cursor.execute("""
+        SELECT COUNT(DISTINCT cliente_id) AS numero_de_clientes
+        FROM ventas;
+    """)
+    
+    resultado = cursor.fetchone()
+    print(f"Número de clientes: {resultado[0]}")
+
+except Exception as e:
+    print(f"Ocurrió un error: {e}")
+finally:
+    cursor.close()
+    conexion.close()
+
+---------------------------------
+
+Ejercicio 8.1
+
+import psycopg2
+
+try:
+    # Conectar a la base de datos
+    conexion = psycopg2.connect(
+        dbname="nombre_db",
+        user="tu_usuario",
+        password="tu_contraseña",
+        host="localhost",
+        port="5432"
+    )
+    cursor = conexion.cursor()
+
+    # Encontrar el producto más vendido
+    cursor.execute("""
+        SELECT nombre_producto
+        FROM productos
+        WHERE producto_id IN (
+            SELECT producto_id
+            FROM ventas
+            GROUP BY producto_id
+            ORDER BY SUM(cantidad) DESC
+            LIMIT 1
+        );
+    """)
+    
+    resultado = cursor.fetchone()
+    print(f"Producto más vendido: {resultado[0]}")
+
+except Exception as e:
+    print(f"Ocurrió un error: {e}")
+finally:
+    cursor.close()
+    conexion.close()
+
+-------------------------------------
+
+Ejercicio 8.2
+
+import psycopg2
+
+try:
+    # Conectar a la base de datos
+    conexion = psycopg2.connect(
+        dbname="nombre_db",
+        user="tu_usuario",
+        password="tu_contraseña",
+        host="localhost",
+        port="5432"
+    )
+    cursor = conexion.cursor()
+
+    # Verificar si un cliente ha realizado compras
+    cursor.execute("""
+        SELECT nombre_cliente
+        FROM clientes
+        WHERE EXISTS (
+            SELECT 1
+            FROM ventas
+            WHERE ventas.cliente_id = clientes.cliente_id
+        );
+    """)
+    
+    resultados = cursor.fetchall()
+    for fila in resultados:
+        print(f"Cliente: {fila[0]}")
+
+except Exception as e:
+    print(f"Ocurrió un error: {e}")
+finally:
+    cursor.close()
+    conexion.close()
