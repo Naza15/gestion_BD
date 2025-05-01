@@ -1,0 +1,177 @@
+banco.py
+import psycopg2
+import threading
+import time
+import random
+from datetime import datetime
+import logging
+from sqlalchemy import create_engine, Column, Integer, String, DECIMAL, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("banco.log"),
+        logging.StreamHandler(),
+    ],
+)
+
+engine = create_engine("postgresql://mi_usuario:mi_clave@localhost/banco")
+Base = declarative_base()
+Session = sessionmaker(bind=engine)
+
+class Cuenta(Base):
+    __tablename__ = "cuentas"
+    id_cuenta = Column(Integer, primary_key=True)
+    nombre_cliente = Column(String)
+    saldo = Column(DECIMAL)
+
+class Transaccion(Base):
+    __tablename__ = "transacciones"
+    id_transaccion = Column(Integer, primary_key=True)
+    id_cuenta = Column(Integer, ForeignKey("cuentas.id_cuenta"))
+    tipo_transaccion = Column(String)
+    monto = Column(DECIMAL)
+    fecha_transaccion = Column(TIMESTAMP)
+
+def generar_datos(tiempo_ejecucion):
+    """Genera datos simulados de cuentas y transacciones e inserta en la base de datos usando SQLAlchemy."""
+    inicio_tiempo = time.time()
+    session = Session()
+    logging.info("Hilo de generación de datos iniciado.")
+    while time.time() - inicio_tiempo < tiempo_ejecucion:
+        try:
+            nombre_cliente = f"Cliente {random.randint(1, 100)}"
+            saldo = round(random.uniform(1000, 10000), 2)
+            nueva_cuenta = Cuenta(nombre_cliente=nombre_cliente, saldo=saldo)
+            session.add(nueva_cuenta)
+            session.flush()
+            id_cuenta = nueva_cuenta.id_cuenta
+            tipo_transaccion = random.choice(["deposito", "retiro"])
+            monto = round(random.uniform(100, 1000), 2)
+            fecha_transaccion = datetime.now()
+            nueva_transaccion = Transaccion(
+                id_cuenta=id_cuenta,
+                tipo_transaccion=tipo_transaccion,
+                monto=monto,
+                fecha_transaccion=fecha_transaccion,
+            )
+            session.add(nueva_transaccion)
+            session.commit()
+            logging.info(f"Datos insertados: Cuenta {id_cuenta}, Transacción {tipo_transaccion} - {monto}")
+            time.sleep(2)
+        except Exception as e:
+            logging.error(f"Error al insertar datos: {e}")
+            session.rollback()
+    session.close()
+    logging.info("Hilo de generación de datos finalizado.")
+
+def main():
+    """Función principal para iniciar la generación de datos."""
+    try:
+        tiempo_ejecucion = int(input("Ingrese el tiempo de ejecución en segundos: "))
+        hilo_generador = threading.Thread(target=generar_datos, args=(tiempo_ejecucion,))
+        hilo_generador.start()
+        hilo_generador.join()
+    except Exception as e:
+        logging.error(f"Error: {e}")
+
+if __name__ == "__main__":
+    main()
+
+-------------
+
+configuración db
+
+CREATE DATABASE banco;
+
+CREATE ROLE generador_datos WITH LOGIN PASSWORD 'clave_segura';
+GRANT CONNECT ON DATABASE banco TO generador_datos;
+
+CREATE USER mi_usuario WITH PASSWORD 'mi_clave' IN ROLE generador_datos;
+
+CREATE TABLE cuentas (
+    id_cuenta SERIAL PRIMARY KEY,
+    nombre_cliente VARCHAR(255),
+    saldo DECIMAL
+);
+
+CREATE TABLE transacciones (
+    id_transaccion SERIAL PRIMARY KEY,
+    id_cuenta INTEGER,
+    tipo_transaccion VARCHAR(10),
+    monto DECIMAL,
+    fecha_transaccion TIMESTAMP,
+    FOREIGN KEY (id_cuenta) REFERENCES cuentas(id_cuenta)
+);
+
+GRANT INSERT ON TABLE cuentas TO generador_datos;
+GRANT INSERT ON TABLE transacciones TO generador_datos;
+
+-------------------
+
+respaldo db
+
+# Respaldo de la Base de Datos
+pg_dump -U postgres -d banco -f respaldo_banco.sql
+
+# Restauración de la Base de Datos
+CREATE DATABASE banco_restaurado;
+psql -U postgres -d banco_restaurado -f respaldo_banco.sql
+
+---------------------
+
+tablas
+
+CREATE TABLE cuentas (
+    id_cuenta SERIAL PRIMARY KEY,
+    nombre_cliente VARCHAR(255),
+    saldo DECIMAL
+);
+
+CREATE TABLE transacciones (
+    id_transaccion SERIAL PRIMARY KEY,
+    id_cuenta INTEGER,
+    tipo_transaccion VARCHAR(10),
+    monto DECIMAL,
+    fecha_transaccion TIMESTAMP,
+    FOREIGN KEY (id_cuenta) REFERENCES cuentas(id_cuenta)
+);
+
+GRANT INSERT ON TABLE cuentas TO generador_datos;
+GRANT INSERT ON TABLE transacciones TO generador_datos;
+
+--------------------
+
+datos de prueba
+
+-- Insertar datos de prueba en la tabla "cuentas"
+INSERT INTO cuentas (nombre_cliente, saldo) VALUES
+    ('Juan Pérez', 1000.00),
+    ('María Gómez', 2500.00),
+    ('Carlos Rodríguez', 800.50);
+
+-- Insertar datos de prueba en la tabla "transacciones"
+INSERT INTO transacciones (id_cuenta, tipo_transaccion, monto, fecha_transaccion) VALUES
+    (1, 'Depósito', 500.00, '2023-04-01 10:30:00'),
+    (1, 'Retiro', 200.00, '2023-04-15 14:45:00'),
+    (2, 'Depósito', 1000.00, '2023-03-20 09:15:00'),
+    (3, 'Retiro', 150.00, '2023-04-22 16:20:00');
+
+
+-------------------
+
+consultas 
+
+
+-- Consultar todos los registros de la tabla "cuentas"
+SELECT * FROM cuentas;
+
+-- Consultar todas las transacciones de la cuenta 1
+SELECT * FROM transacciones WHERE id_cuenta = 1;
+
+-- Calcular el saldo total de todas las cuentas
+SELECT SUM(saldo) AS saldo_total FROM cuentas;
+
